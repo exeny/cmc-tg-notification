@@ -4,9 +4,9 @@ import schedule
 import time
 import json
 
-tg_bot_token = '' # Get telegram bot token: @BotFather
-chat_id = '' # Get your telegram chat id: @getmyid_bot
-coinmarketcap_api_key = '' # Get ApiKey in https://pro.coinmarketcap.com/account
+tg_bot_token = '7324379600:AAETqcyPwlw0_PrTDiRaBRO7eRMAZuhe5_4' # Get telegram bot token: @BotFather
+chat_id = '6433374138' # Get your telegram chat id: @getmyid_bot
+coinmarketcap_api_key = '9cadf058-d409-4858-8aa1-0cee2d762dfb' # Get ApiKey in https://pro.coinmarketcap.com/account
 local_currency = 'USD' # Enter your local currency. If you don't need it, specify USD
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
@@ -23,7 +23,7 @@ def get_rate_to_usd():
     url = "https://api.exchangerate-api.com/v4/latest/USD"
     response = requests.get(url)
     data = response.json()
-    print(data['rates'][local_currency])
+    print(str(data['rates'][local_currency]) + " " + str(local_currency) + " for 1 USD")
     return data['rates'][local_currency]
 
 def send_log(message, tg_bot_token, chat_id):
@@ -33,7 +33,12 @@ def send_log(message, tg_bot_token, chat_id):
         'text': message
     }
     response = requests.post(url, json=payload)
-    print(response.json())
+    json_response = response.json()  # Call json() method to parse JSON data
+    ok_value = json_response.get('ok')
+    if (ok_value == True):
+        print("Sended!")
+    else: 
+        print("Error: sending failed")
     return response.json()
 
 def format_converted(number):
@@ -64,7 +69,7 @@ def main_task():
         logs += f"{i}\uFE0F\u20E3 {symbol} - {amount} x ${price_usd:.3f}.\n— ${value_usd:.2f} ({format_converted(int(value_converted))} {local_currency})\n\n"
 
     logs = f"💵 ${total_value_usd:.2f} ({format_converted(int(total_value_converted))} {local_currency})\n\n\n{logs}"
-
+    print(f"Total price: ${total_value_usd:.2f}")
     send_log(logs, tg_bot_token, chat_id)
 
 main_task()
