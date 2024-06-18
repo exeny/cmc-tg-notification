@@ -3,9 +3,9 @@ import locale
 import schedule
 import time
 
-chat_id = '' # Get your telegram chat id: @getmyid_bot
 tg_bot_token = '' # Get telegram bot token: @BotFather
-local_currency = '' # Enter your local currency. If you don't need it, specify USD
+chat_id = '' # Get your telegram chat id: @getmyid_bot
+local_currency = 'USD' # Enter your local currency. If you don't need it, specify USD
 coinmarketcap_api_key = '' # Get ApiKey in https://pro.coinmarketcap.com/account
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
