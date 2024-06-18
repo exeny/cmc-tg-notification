@@ -6,8 +6,8 @@ import json
 
 tg_bot_token = '' # Get telegram bot token: @BotFather
 chat_id = '' # Get your telegram chat id: @getmyid_bot
-local_currency = 'USD' # Enter your local currency. If you don't need it, specify USD
 coinmarketcap_api_key = '' # Get ApiKey in https://pro.coinmarketcap.com/account
+local_currency = 'USD' # Enter your local currency. If you don't need it, specify USD
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def get_price(symbol):
