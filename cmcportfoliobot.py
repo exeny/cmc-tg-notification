@@ -2,6 +2,7 @@ import requests
 import locale
 import schedule
 import time
+import json
 
 tg_bot_token = '' # Get telegram bot token: @BotFather
 chat_id = '' # Get your telegram chat id: @getmyid_bot
@@ -38,10 +39,13 @@ def send_log(message, tg_bot_token, chat_id):
 def format_converted(number):
     return locale.format_string("%d", number, grouping=True)
 
+def load_portfolio(filename='crypto_portfolio.json'):
+    with open(filename, 'r') as f:
+        portfolio = json.load(f)
+    return portfolio
+
 def main_task():
-    crypto_portfolio = {
-        'BTC': 0.0051, #Enter your portfolio like this 'TokenShortName': quantity,
-    }
+    crypto_portfolio = load_portfolio()
 
     rate_to_usd = get_rate_to_usd()
 
@@ -50,7 +54,7 @@ def main_task():
     total_value_converted = 0
     for i, (symbol, amount) in enumerate(crypto_portfolio.items(), start=1):
         if symbol == 'USDT':
-            price_usd = 1 #USDT always cost 1$
+            price_usd = 1 # USDT always costs $1
         else:
             price_usd = get_price(symbol)
         value_usd = price_usd * amount
