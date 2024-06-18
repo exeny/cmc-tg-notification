@@ -54,9 +54,19 @@ pip install -r requirements.txt
 1. Sign Up in [https://pro.coinmarketcap.com/account](https://pro.coinmarketcap.com/account) and copy your api key
 2. Enter the API key in coinmarketcap_api_key
 
-**Enter coins from your portfolio to this form**
+**Enter coins from your portfolio to crypto_portfolio.json**
 
-<img src="https://i.imgur.com/1OHTA2x.png">
+> Like this:
+```sh
+ {
+  "Token": quantity,
+  "Token": quantity
+} 
+```
+
+
+
+<img src="https://i.imgur.com/jrZa9iJ.png">
 
 **Enter local_currency (if you need it)**
 <img src="https://i.imgur.com/nBFTGYP.png">
