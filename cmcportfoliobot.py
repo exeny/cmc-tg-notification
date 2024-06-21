@@ -49,17 +49,16 @@ def load_portfolio(filename='crypto_portfolio.json'):
         portfolio = json.load(f)
     return portfolio
 
-def main_task():
+def generate_report():
     crypto_portfolio = load_portfolio()
-
     rate_to_usd = get_rate_to_usd()
-
+    
     logs = ""
     total_value_usd = 0
     total_value_converted = 0
     for i, (symbol, amount) in enumerate(crypto_portfolio.items(), start=1):
         if symbol == 'USDT':
-            price_usd = 1 # USDT always costs $1
+            price_usd = 1
         else:
             price_usd = get_price(symbol)
         value_usd = price_usd * amount
@@ -70,11 +69,46 @@ def main_task():
 
     logs = f"💵 ${total_value_usd:.2f} ({format_converted(int(total_value_converted))} {local_currency})\n\n\n{logs}"
     print(f"Porfolio total cost: ${total_value_usd:.2f}")
+    return logs
+
+def main_task():
+    logs = generate_report()
     send_log(logs, tg_bot_token, chat_id)
 
-main_task()
-schedule.every().hour.do(main_task)
+def check_command():
+    logs = generate_report()
+    send_log(logs, tg_bot_token, chat_id)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+def get_updates(offset=None):
+    url = f"https://api.telegram.org/bot{tg_bot_token}/getUpdates"
+    params = {'timeout': 100, 'offset': offset}
+    response = requests.get(url, params=params)
+    return response.json()
+
+def handle_updates(updates):
+    for update in updates['result']:
+        update_id = update['update_id']
+        message = update.get('message')
+        if message:
+            text = message.get('text')
+            chat_id = message['chat']['id']
+            if text == '/check':
+                check_command()
+        return update_id
+
+def main():
+    main_task()
+    schedule.every().hour.do(main_task)
+    last_update_id = None
+
+    while True:
+        schedule.run_pending()
+        updates = get_updates(last_update_id)
+        if 'result' in updates and len(updates['result']) > 0:
+            last_update_id = handle_updates(updates) + 1
+        time.sleep(1)
+
+if __name__ == '__main__':
+    main()
+
+

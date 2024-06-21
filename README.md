@@ -25,6 +25,9 @@
 <img style="width:100;" src="https://i.imgur.com/cVizPy6.png"/>
 </p>
 
+> You can send `/check` command
+> <img style="width:100;" src="https://i.imgur.com/zDLXaef.png"/>
+
 ### Installation
 
 ```sh
@@ -57,14 +60,13 @@ pip install -r requirements.txt
 **Enter coins from your portfolio to crypto_portfolio.json**
 
 > Like this:
+
 ```sh
  {
   "Token": quantity,
   "Token": quantity
-} 
+}
 ```
-
-
 
 <img src="https://i.imgur.com/jrZa9iJ.png">
 
